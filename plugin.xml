@@ -20,7 +20,7 @@
   </engines>
 
   <js-module name="SSLCertificateChecker" src="www/SSLCertificateChecker.js">
-    <clobbers target="window.plugins.sslCertificateChecker" />
+    <clobbers target="cordova.plugins.sslCertificateChecker" />
   </js-module>
 
   <!-- ios -->
