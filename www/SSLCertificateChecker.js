@@ -27,7 +27,9 @@ SSLCertificateChecker.prototype.check = function (successCallback, errorCallback
   if (allowedSHA1FingerprintAlt !== undefined) {
       fpArr.push(allowedSHA1FingerprintAlt);
   }
-  exec(successCallback, errorCallback, "SSLCertificateChecker", "check", [serverURL, false, fpArr]);
+  return new Promise(function(successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "SSLCertificateChecker", "check", [serverURL, false, fpArr]);
+  })
 };
 
 SSLCertificateChecker.prototype.checkInCertChain = function (successCallback, errorCallback, serverURL, allowedSHA1FingerprintOrArray, allowedSHA1FingerprintAlt) {

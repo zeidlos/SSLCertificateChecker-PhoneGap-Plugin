@@ -10,10 +10,14 @@
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
-1. [Description](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin#1-description)
-2. [Installation](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin#2-installation)
-3. [Usage](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin#3-usage)
-4. [Credits](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin#4-credits)
+1. [Description](https://github.com/zeidlos/SSLCertificateChecker-PhoneGap-Plugin#1-description)
+2. [Installation](https://github.com/zeidlos/SSLCertificateChecker-PhoneGap-Plugin#2-installation)
+3. [Usage](https://github.com/zeidlos/SSLCertificateChecker-PhoneGap-Plugin#3-usage)
+4. [Credits](https://github.com/zeidlos/SSLCertificateChecker-PhoneGap-Plugin#4-credits)
+
+## Preface
+
+This variation of the SSLCheckerPlugin expands it just a little in order to handle asynchronous JavaScript calls. In order to achieve this, we've added Promises to work with.
 
 <table width="100%">
     <tr>
@@ -65,28 +69,41 @@ You can find it f.i. by opening the server URL in Chrome. Then click the green c
 'Certificate details', expand the details and scroll down to the SHA1 fingerprint.
 
 ```javascript
-  var server = "https://build.phonegap.com";
-  var fingerprint = "2B 24 1B E0 D0 8C A6 41 68 C2 BB E3 60 0A DF 55 1A FC A8 45";
+	  
+	this.checkSSL()
+    .then(() => {
+      […]
+    })
+    .catch((err) => {
+		  […]
+    })
+	
+	[…]
 
-  window.plugins.sslCertificateChecker.check(
-          successCallback,
-          errorCallback,
-          server,
-          fingerprint);
-
-   function successCallback(message) {
-     alert(message);
-     // Message is always: CONNECTION_SECURE.
-     // Now do something with the trusted server.
-   }
-
-   function errorCallback(message) {
-     alert(message);
-     if (message == "CONNECTION_NOT_SECURE") {
-       // There is likely a man in the middle attack going on, be careful!
-     } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
-       // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
-     }
+	function checkSSL(): Promise<any> {
+	  var server = "https://build.phonegap.com";
+	  var fingerprint = "2B 24 1B E0 D0 8C A6 41 68 C2 BB E3 60 0A DF 55 1A FC A8 45";
+	
+	  return window.plugins.sslCertificateChecker.check(
+	          successCallback,
+	          errorCallback,
+	          server,
+	          fingerprint);
+	
+	   function successCallback(message) {
+	     alert(message);
+	     // Message is always: CONNECTION_SECURE.
+	     // Now do something with the trusted server.
+	   }
+	
+	   function errorCallback(message) {
+	     alert(message);
+	     if (message == "CONNECTION_NOT_SECURE") {
+	       // There is likely a man in the middle attack going on, be careful!
+	     } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
+	       // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
+	     }
+	   }
    }
 ```
 
